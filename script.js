@@ -5,6 +5,7 @@ const score0El = document.getElementById('score--0');
 const score1El = document.getElementById('score--1');
 const current0El = document.querySelector('#current--0');
 const current1El = document.querySelector('#current--1');
+const newGame = document.querySelector('.btn--new');
 
 const diceEl = document.querySelector('.dice');
 const btnRoll = document.querySelector('.btn--roll');
@@ -15,17 +16,28 @@ const player1El = document.querySelector('.player--1');
 const players = document.querySelectorAll('.player');
 const currentScores = document.querySelectorAll('.current-score');
 
-let scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-// let currentScore1 = 0;
+let scores, currentScore, activePlayer, playing;
 
-let playing = true;
+const init = function() {
+    //Starting conditions
+    scores = [0, 0];
+    currentScore = 0;
+    activePlayer = 0;
+    playing = true;
 
-//Starting conditions
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
+    score0El.textContent = 0;
+    score1El.textContent = 0;
+    current0El.textContent = 0;
+    current1El.textContent = 0;
+
+    diceEl.classList.add('hidden');
+    player0El.classList.remove('player--winner');
+    player1El.classList.remove('player--winner');
+    player1El.classList.remove('player--active');
+    player0El.classList.add('player--active');
+};
+
+init();
 
 const changePlayer = function() {
     document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -59,8 +71,9 @@ function holdFxn() {
         document.getElementById(`score--${activePlayer}`).textContent =
             scores[activePlayer];
 
-        if (scores[activePlayer] >= 100) {
+        if (scores[activePlayer] >= 10) {
             playing = false;
+            diceEl.classList.add('hidden');
             document
                 .querySelector(`.player--${activePlayer}`)
                 .classList.add('player--winner');
@@ -72,6 +85,8 @@ function holdFxn() {
         }
     }
 }
+
+newGame.addEventListener('click', init);
 
 btnRoll.addEventListener('click', rollDiceFxn);
 
